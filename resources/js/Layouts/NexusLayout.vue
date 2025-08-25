@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
 
 // Minimal theme/layout controller port from html/js/app.js
@@ -72,14 +72,22 @@ onMounted(() => {
   fullscreenMedia.addEventListener('change', listener)
 })
 
-// Active menu handling based on current URL
-const { url } = usePage()
+// Active menu handling based on current URL (SSR-safe)
+const page = usePage()
+const currentPath = computed(() => {
+  try {
+    const u = typeof page.url === 'string' ? page.url : '/'
+    return u.split('?')[0]
+  } catch (e) {
+    return '/'
+  }
+})
 function isActive(href) {
   try {
-    const u = new URL(href, window.location.origin)
-    return u.pathname === window.location.pathname
+    const u = new URL(href, 'http://localhost')
+    return u.pathname === currentPath.value
   } catch {
-    return href === window.location.pathname
+    return href === currentPath.value
   }
 }
 </script>
@@ -109,7 +117,7 @@ function isActive(href) {
             <div class="mb-3 space-y-0.5 px-2.5">
               <p class="menu-label px-2.5 pt-3 pb-1.5 first:pt-0">Overview</p>
               <div class="group collapse">
-                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" />
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/dashboards-ecommerce') || isActive('/dashboards-crm') || isActive('/dashboards-gen-ai')" />
                 <div class="collapse-title px-2.5 py-1.5">
                   <span class="iconify lucide--monitor-dot size-4"></span>
                   <span class="grow">Dashboard</span>
@@ -132,7 +140,7 @@ function isActive(href) {
 
               <p class="menu-label px-2.5 pt-3 pb-1.5 first:pt-0">Apps</p>
               <div class="group collapse">
-                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" />
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/apps-ecommerce-orders') || isActive('/apps-ecommerce-products') || isActive('/apps-ecommerce-sellers') || isActive('/apps-ecommerce-customers') || isActive('/apps-ecommerce-shops')" />
                 <div class="collapse-title px-2.5 py-1.5">
                   <span class="iconify lucide--store size-4"></span>
                   <span class="grow">Ecommerce</span>
@@ -160,7 +168,7 @@ function isActive(href) {
 
               <p class="menu-label px-2.5 pt-3 pb-1.5 first:pt-0">Extras</p>
               <div class="group collapse">
-                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" />
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/login') || isActive('/register') || isActive('/forgot-password') || currentPath.startsWith('/reset-password')" />
                 <div class="collapse-title px-2.5 py-1.5">
                   <span class="iconify lucide--shield-check size-4"></span>
                   <span class="grow">Auth</span>
@@ -177,7 +185,7 @@ function isActive(href) {
               </div>
 
               <div class="group collapse">
-                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" />
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/pages-settings') || isActive('/pages-get-help')" />
                 <div class="collapse-title px-2.5 py-1.5">
                   <span class="iconify lucide--files size-4"></span>
                   <span class="grow">Pages</span>

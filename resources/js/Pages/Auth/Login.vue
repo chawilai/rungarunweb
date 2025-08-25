@@ -38,13 +38,13 @@ const submit = () => {
         <form @submit.prevent="submit" class="space-y-4">
           <div class="form-control">
             <label class="label" for="email"><span class="label-text">Email</span></label>
-            <input id="email" type="email" v-model="form.email" required autofocus autocomplete="username" class="input input-bordered w-full" />
+            <input id="email" type="email" v-model="form.email" required autofocus autocomplete="username" class="input input-bordered w-full focus:outline-none focus:ring-0 focus:ring-offset-0 focus:shadow-none" />
             <InputError class="mt-2" :message="form.errors.email" />
           </div>
 
           <div class="form-control">
             <label class="label" for="password"><span class="label-text">Password</span></label>
-            <input id="password" type="password" v-model="form.password" required autocomplete="current-password" class="input input-bordered w-full" />
+            <input id="password" type="password" v-model="form.password" required autocomplete="current-password" class="input input-bordered w-full focus:outline-none focus:ring-0 focus:ring-offset-0 focus:shadow-none" />
             <InputError class="mt-2" :message="form.errors.password" />
           </div>
 
