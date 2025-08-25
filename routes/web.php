@@ -18,6 +18,12 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Nexus: E-commerce Dashboard (public)
+Route::get('/dashboards-ecommerce', function () {
+    return Inertia::render('Nexus/Dashboards/Ecommerce');
+})->name('nexus.dashboard.ecommerce');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -4,3 +4,7 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+
+/* Include Nexus compiled CSS for visual parity */
+@import '../../nexus-html@3.0.0/html/assets/app.css';
