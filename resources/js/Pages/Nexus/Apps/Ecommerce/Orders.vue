@@ -1,6 +1,7 @@
 <script setup>
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import NexusLayout from '@/Layouts/NexusLayout.vue'
+import { orders } from '@/data/ecommerce/orders'
 </script>
 
 <template>
@@ -61,26 +62,27 @@ import NexusLayout from '@/Layouts/NexusLayout.vue'
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
+                  <tr v-for="o in orders" :key="o.id" class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
                     <th class="px-6">
-                      <input aria-label="Select order 21001" data-slot="single-checkbox" class="checkbox checkbox-sm" type="checkbox" />
+                      <input :aria-label="`Select order ${o.id}`" data-slot="single-checkbox" class="checkbox checkbox-sm" type="checkbox" />
                     </th>
-                    <td class="font-medium">#21001</td>
-                    <td>5 Items</td>
-                    <td>Emily Johnson</td>
-                    <td class="text-sm font-medium">$342</td>
-                    <td><div aria-label="Badge" class="badge badge-soft badge-success">Paid</div></td>
-                    <td class="text-sm">Ordered</td>
-                    <td class="text-sm">29 May 2024</td>
+                    <td class="font-medium">{{ o.id }}</td>
+                    <td>{{ o.itemsCount }} Items</td>
+                    <td>{{ o.customer }}</td>
+                    <td class="text-sm font-medium">${{ o.price }}</td>
                     <td>
-                      <Link aria-label="View order 21001" href="/apps-ecommerce-orders">
-                        <button aria-label="View order 21001" class="btn btn-square btn-ghost btn-sm">
+                      <div class="badge badge-soft" :class="o.payment === 'Paid' ? 'badge-success' : o.payment === 'Pending' ? 'badge-warning' : 'badge-error'">{{ o.payment }}</div>
+                    </td>
+                    <td class="text-sm">{{ o.status }}</td>
+                    <td class="text-sm">{{ o.orderedAt }}</td>
+                    <td>
+                      <Link :aria-label="`View order ${o.id}`" href="/apps-ecommerce-orders">
+                        <button :aria-label="`View order ${o.id}`" class="btn btn-square btn-ghost btn-sm">
                           <span class="iconify lucide--eye text-base-content/80 size-4"></span>
                         </button>
                       </Link>
                     </td>
                   </tr>
-                  <!-- More rows can be added or generated dynamically later -->
                 </tbody>
               </table>
             </div>

@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3'
 import NexusLayout from '@/Layouts/NexusLayout.vue'
+import { customers } from '@/data/ecommerce/customers'
 </script>
 
 <template>
@@ -38,24 +39,26 @@ import NexusLayout from '@/Layouts/NexusLayout.vue'
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
-                    <th><input aria-label="Single check" class="checkbox checkbox-sm" type="checkbox" /></th>
-                    <td class="font-medium">1</td>
+                  <tr v-for="c in customers" :key="c.id" class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
+                    <th><input :aria-label="`Select customer ${c.id}`" class="checkbox checkbox-sm" type="checkbox" /></th>
+                    <td class="font-medium">{{ c.id }}</td>
                     <td>
                       <div class="flex items-center space-x-3 truncate">
-                        <img alt="Customer" class="mask mask-squircle bg-base-200 size-10" src="/nexus/images/avatars/1.png" />
+                        <img :alt="c.name" class="mask mask-squircle bg-base-200 size-10" :src="c.avatar" />
                         <div>
-                          <p class="font-medium">James S. Jackson</p>
-                          <p class="text-base-content/80 text-xs capitalize">male</p>
+                          <p class="font-medium">{{ c.name }}</p>
+                          <p class="text-base-content/80 text-xs capitalize">{{ c.gender }}</p>
                         </div>
                       </div>
                     </td>
-                    <td>james.jack@mail.com</td>
-                    <td>845-346-8004</td>
-                    <td>136</td>
-                    <td>$2450</td>
-                    <td><div class="badge badge-soft badge-success">Verified</div></td>
-                    <td>12 Feb 2024</td>
+                    <td>{{ c.email }}</td>
+                    <td>{{ c.mobile }}</td>
+                    <td>{{ c.sales }}</td>
+                    <td>{{ c.earning }}</td>
+                    <td>
+                      <div class="badge badge-soft" :class="c.verified ? 'badge-success' : 'badge-warning'">{{ c.verified ? 'Verified' : 'Unverified' }}</div>
+                    </td>
+                    <td>{{ c.joined }}</td>
                     <td>
                       <button class="btn btn-square btn-ghost btn-sm" aria-label="View"><span class="iconify lucide--eye size-4"></span></button>
                     </td>

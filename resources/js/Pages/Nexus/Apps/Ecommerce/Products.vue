@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3'
 import NexusLayout from '@/Layouts/NexusLayout.vue'
+import { products } from '@/data/ecommerce/products'
 </script>
 
 <template>
@@ -44,24 +45,28 @@ import NexusLayout from '@/Layouts/NexusLayout.vue'
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
-                    <th><input aria-label="Single check" class="checkbox checkbox-sm" type="checkbox" /></th>
-                    <td>1001</td>
+                  <tr v-for="p in products" :key="p.id" class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
+                    <th><input :aria-label="`Select product ${p.id}`" class="checkbox checkbox-sm" type="checkbox" /></th>
+                    <td>{{ p.id }}</td>
                     <td>
                       <div class="flex items-center space-x-3 truncate">
-                        <img alt="Product" class="rounded-box size-10" src="/nexus/images/apps/ecommerce/products/1.jpg" />
+                        <img :alt="p.name" class="rounded-box size-10" :src="p.image" />
                         <div>
-                          <p class="font-medium">Men's tracking shoes</p>
-                          <p class="text-base-content/60 text-xs">#SHOES</p>
+                          <p class="font-medium">{{ p.name }}</p>
+                          <p class="text-base-content/60 text-xs">{{ p.tag }}</p>
                         </div>
                       </div>
                     </td>
-                    <td>Fashion</td>
-                    <td class="text-sm font-medium">$29</td>
-                    <td>4.6</td>
-                    <td>136</td>
-                    <td><div class="badge badge-soft badge-success">In stock</div></td>
-                    <td>14 Feb 2024</td>
+                    <td>{{ p.category }}</td>
+                    <td class="text-sm font-medium">${{ p.price }}</td>
+                    <td>{{ p.rating }}</td>
+                    <td>{{ p.orders }}</td>
+                    <td>
+                      <div class="badge" :class="p.stock === 'In stock' ? 'badge-soft badge-success' : p.stock === 'Low stock' ? 'badge-soft badge-warning' : 'badge-soft badge-error'">
+                        {{ p.stock }}
+                      </div>
+                    </td>
+                    <td>{{ p.createdAt }}</td>
                     <td>
                       <button class="btn btn-square btn-ghost btn-sm" aria-label="View"><span class="iconify lucide--eye size-4"></span></button>
                     </td>

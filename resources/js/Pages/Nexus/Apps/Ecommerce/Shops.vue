@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3'
 import NexusLayout from '@/Layouts/NexusLayout.vue'
+import { shops } from '@/data/ecommerce/shops'
 </script>
 
 <template>
@@ -38,23 +39,23 @@ import NexusLayout from '@/Layouts/NexusLayout.vue'
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
-                    <th scope="row"><input aria-label="Single check" data-slot="single-checkbox" class="checkbox checkbox-sm" type="checkbox" /></th>
-                    <td class="font-medium">1</td>
-                    <td class="font-medium">Urban Chic Boutique</td>
-                    <td>Anthony S. Amaya</td>
-                    <td>urban.chic@yahoo.com</td>
-                    <td>402-788-1602</td>
-                    <td>20</td>
+                  <tr v-for="s in shops" :key="s.id" class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
+                    <th scope="row"><input :aria-label="`Select shop ${s.id}`" data-slot="single-checkbox" class="checkbox checkbox-sm" type="checkbox" /></th>
+                    <td class="font-medium">{{ s.id }}</td>
+                    <td class="font-medium">{{ s.name }}</td>
+                    <td>{{ s.seller }}</td>
+                    <td>{{ s.email }}</td>
+                    <td>{{ s.mobile }}</td>
+                    <td>{{ s.sales }}</td>
                     <td>
                       <div class="flex items-center gap-1">
                         <span class="iconify lucide--star text-success size-4"></span>
-                        4.4 <span class="text-base-content/80 text-xs">(124)</span>
+                        {{ s.rating }} <span class="text-base-content/80 text-xs">({{ s.ratingCount }})</span>
                       </div>
                     </td>
-                    <td>$1,240</td>
-                    <td><div class="badge badge-soft badge-success">Verified</div></td>
-                    <td>09 Jan 2024</td>
+                    <td>{{ s.earning }}</td>
+                    <td><div class="badge badge-soft" :class="s.verified ? 'badge-success' : 'badge-warning'">{{ s.verified ? 'Verified' : 'Unverified' }}</div></td>
+                    <td>{{ s.joined }}</td>
                     <td><button class="btn btn-square btn-ghost btn-sm" aria-label="View"><span class="iconify lucide--eye size-4"></span></button></td>
                   </tr>
                 </tbody>
