@@ -28,16 +28,20 @@ function saveConfig() {
 }
 
 function applyConfig() {
-  // theme
-  if (config.value.theme === 'system') html.removeAttribute('data-theme')
-  else html.setAttribute('data-theme', config.value.theme)
+  // theme (system follows OS preference)
+  let themeToApply = config.value.theme
+  if (themeToApply === 'system') {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    themeToApply = prefersDark ? 'dark' : 'light'
+  }
+  html.setAttribute('data-theme', themeToApply)
 
   // sidebar theme
   const sidebar = document.getElementById('layout-sidebar')
   if (sidebar) {
     if (
       config.value.sidebarTheme === 'dark' &&
-      ['light', 'contrast'].includes(config.value.theme)
+      ['light', 'contrast'].includes(themeToApply)
     ) {
       sidebar.setAttribute('data-theme', config.value.sidebarTheme)
     } else sidebar.removeAttribute('data-theme')
@@ -59,17 +63,29 @@ function updateAndApply() {
   applyConfig()
 }
 
+function setTheme(theme) {
+  config.value.theme = theme
+  updateAndApply()
+}
+
 onMounted(() => {
   loadConfig()
   applyConfig()
 
   // fullscreen media sync
   const fullscreenMedia = window.matchMedia('(display-mode: fullscreen)')
-  const listener = () => {
+  const fsListener = () => {
     config.value.fullscreen = fullscreenMedia.matches
     updateAndApply()
   }
-  fullscreenMedia.addEventListener('change', listener)
+  fullscreenMedia.addEventListener('change', fsListener)
+
+  // system theme changes
+  const mql = window.matchMedia('(prefers-color-scheme: dark)')
+  const themeListener = () => {
+    if (config.value.theme === 'system') applyConfig()
+  }
+  try { mql.addEventListener('change', themeListener) } catch (_) { mql.onchange = themeListener }
 })
 
 // Active menu handling based on current URL (SSR-safe)
@@ -267,11 +283,20 @@ function isActive(href) {
           </div>
 
           <div class="inline-flex items-center gap-2">
-            <!-- Theme toggle -->
-            <button class="btn btn-ghost btn-sm" @click="config.theme = config.theme==='light' ? 'dark' : 'light'; updateAndApply();">
-              <span class="iconify lucide--sun" v-if="config.theme==='light'"></span>
-              <span class="iconify lucide--moon" v-else></span>
-            </button>
+            <!-- Theme control: system / light / dark / contrast -->
+            <div class="dropdown dropdown-end">
+              <button type="button" class="btn btn-ghost btn-sm" aria-haspopup="menu" aria-label="Theme menu">
+                <span class="iconify lucide--sun" v-if="config.theme==='light'"></span>
+                <span class="iconify lucide--moon" v-else-if="config.theme==='dark'"></span>
+                <span class="iconify lucide--palette" v-else></span>
+              </button>
+              <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 shadow">
+                <li><a href="#" @click.prevent="setTheme('system')">System</a></li>
+                <li><a href="#" @click.prevent="setTheme('light')">Light</a></li>
+                <li><a href="#" @click.prevent="setTheme('dark')">Dark</a></li>
+                <li><a href="#" @click.prevent="setTheme('contrast')">Contrast</a></li>
+              </ul>
+            </div>
           </div>
         </nav>
 
