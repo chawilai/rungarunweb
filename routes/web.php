@@ -44,6 +44,14 @@ Route::get('/apps-gen-ai-library', fn() => Inertia::render('Nexus/GenAI/Library'
 
 // Nexus: Pages
 Route::get('/pages-settings', fn() => Inertia::render('Nexus/Pages/Settings'))->name('nexus.pages.settings');
+
+// Nexus: Agentic Hub
+Route::get('/agentic-storage', fn() => Inertia::render('Nexus/Agentic/Storage'))->name('nexus.agentic.storage');
+
+
+// Nexus: Landing
+Route::get('/landing', fn() => Inertia::render('Nexus/Landing'))->name('nexus.landing');
+
 Route::get('/pages-get-help', fn() => Inertia::render('Nexus/Pages/GetHelp'))->name('nexus.pages.gethelp');
 
 

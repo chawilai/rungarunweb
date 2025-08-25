@@ -129,6 +129,27 @@ function isActive(href) {
                       <span class="grow">Ecommerce</span>
                     </Link>
                     <Link class="menu-item" href="/dashboards-crm" :class="{ active: isActive('/dashboards-crm') }">
+
+              <!-- Agentic Hub -->
+              <div class="group collapse">
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/agentic-storage')" />
+                <div class="collapse-title px-2.5 py-1.5">
+                  <span class="iconify lucide--bot-message-square size-4"></span>
+                  <span class="grow">Agentic Hub</span>
+                  <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
+                </div>
+                <div class="collapse-content ms-6.5 !p-0">
+                  <div class="mt-0.5 space-y-0.5">
+                    <Link class="menu-item" href="/agentic-storage" :class="{ active: isActive('/agentic-storage') }">
+                      <span class="grow">Storage</span>
+                      <div class="ms-auto inline-flex gap-2">
+                        <div class="border-primary/20 bg-primary/10 text-primary rounded-box border px-1.5 text-[12px]">New</div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
                       <span class="grow">CRM</span>
                     </Link>
                     <Link class="menu-item" href="/dashboards-gen-ai" :class="{ active: isActive('/dashboards-gen-ai') }">
