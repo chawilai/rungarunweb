@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
 
 // Minimal theme/layout controller port from html/js/app.js
@@ -168,10 +168,10 @@ function isActive(href) {
                 </div>
                 <div class="collapse-content ms-6.5 !p-0">
                   <div class="mt-0.5 space-y-0.5">
-                    <Link class="menu-item" href="/auth-login" :class="{ active: isActive('/auth-login') }"><span class="grow">Login</span></Link>
-                    <Link class="menu-item" href="/auth-register" :class="{ active: isActive('/auth-register') }"><span class="grow">Register</span></Link>
-                    <Link class="menu-item" href="/auth-forgot-password" :class="{ active: isActive('/auth-forgot-password') }"><span class="grow">Forgot Password</span></Link>
-                    <Link class="menu-item" href="/auth-reset-password" :class="{ active: isActive('/auth-reset-password') }"><span class="grow">Reset Password</span></Link>
+                    <Link class="menu-item" href="/login" :class="{ active: isActive('/login') }"><span class="grow">Login</span></Link>
+                    <Link class="menu-item" href="/register" :class="{ active: isActive('/register') }"><span class="grow">Register</span></Link>
+                    <Link class="menu-item" href="/forgot-password" :class="{ active: isActive('/forgot-password') }"><span class="grow">Forgot Password</span></Link>
+                    <Link class="menu-item" href="/forgot-password" :class="{ active: isActive('/forgot-password') }"><span class="grow">Reset Password</span></Link>
                   </div>
                 </div>
               </div>
@@ -227,7 +227,7 @@ function isActive(href) {
       <!-- Main column -->
       <div class="flex h-screen min-w-0 grow flex-col overflow-auto">
         <!-- Topbar (search and controls simplified) -->
-        <div role="navigation" aria-label="Navbar" class="flex items-center justify-between px-3" id="layout-topbar">
+        <nav aria-label="Navbar" class="flex items-center justify-between px-3" id="layout-topbar">
           <div class="inline-flex items-center gap-3">
             <label class="btn btn-square btn-ghost btn-sm group-has-[[id=layout-sidebar-hover-trigger]:checked]/html:hidden" aria-label="Leftmenu toggle" for="layout-sidebar-toggle-trigger">
               <span class="iconify lucide--menu size-5"></span>
@@ -244,7 +244,7 @@ function isActive(href) {
               <span class="iconify lucide--moon" v-else></span>
             </button>
           </div>
-        </div>
+        </nav>
 
         <!-- Page content -->
         <div id="layout-content" class="min-w-0 grow">
