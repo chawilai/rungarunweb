@@ -423,6 +423,46 @@ function isActive(href) {
                       </button>
                     </div>
                   </div>
+
+                      <div class="mt-6">
+                        <p class="font-medium">Font Family</p>
+                        <div class="mt-3 grid grid-cols-2 gap-3">
+                          <button
+                            class="border-base-300 hover:bg-base-200 rounded-box inline-flex items-center justify-center gap-2 border p-2"
+                            :class="{ 'bg-base-200': config.fontFamily === 'dm-sans' }"
+                            @click="config.fontFamily='dm-sans'; updateAndApply()"
+                          >
+                            <p data-font-family="dm-sans" class="font-sans">DM Sans</p>
+                          </button>
+                          <button
+                            class="border-base-300 hover:bg-base-200 rounded-box inline-flex items-center justify-center gap-2 border p-2"
+                            :class="{ 'bg-base-200': config.fontFamily === 'wix' }"
+                            @click="config.fontFamily='wix'; updateAndApply()"
+                          >
+                            <p data-font-family="wix" class="font-sans">Wix</p>
+                          </button>
+                          <button
+                            class="border-base-300 hover:bg-base-200 rounded-box inline-flex items-center justify-center gap-2 border p-2"
+                            :class="{ 'bg-base-200': config.fontFamily === 'inclusive' }"
+                            @click="config.fontFamily='inclusive'; updateAndApply()"
+                          >
+                            <p data-font-family="inclusive" class="font-sans">Inclusive</p>
+                          </button>
+                          <button
+                            class="border-base-300 hover:bg-base-200 rounded-box inline-flex items-center justify-center gap-2 border p-2"
+                            :class="{ 'bg-base-200': config.fontFamily === 'ar-one' }"
+                            @click="config.fontFamily='ar-one'; updateAndApply()"
+                          >
+                            <p data-font-family="ar-one" class="font-sans">AR One Sans</p>
+                          </button>
+                        </div>
+                        <div class="mt-3">
+                          <button class="btn btn-ghost btn-sm" @click="config.fontFamily='default'; updateAndApply()">
+                            Reset to default
+                          </button>
+                        </div>
+                      </div>
+
                 </div>
               </div>
             </div>
