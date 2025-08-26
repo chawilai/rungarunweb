@@ -27,29 +27,59 @@ onMounted(() => {
         "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js",
     ).then(() => {
         if (window.Swiper) {
+            // Init hero swiper (match example landing.js)
             // eslint-disable-next-line no-new
             new window.Swiper("#hero-swiper", {
-                loop: true,
                 slidesPerView: 1,
-                spaceBetween: 16,
-                autoplay: { delay: 3500 },
-                pagination: { el: ".swiper-pagination", clickable: true },
+                cardsEffect: { rotate: false, perSlideOffset: 10, slideShadows: false },
+                loop: true,
+                speed: 1500,
+                autoplay: { delay: 5000 },
+                spaceBetween: 20,
+                navigation: { prevEl: ".hero-swiper-button-prev", nextEl: ".hero-swiper-button-next" },
+            });
+
+            // Init testimonial swiper (match example landing.js)
+            // eslint-disable-next-line no-new
+            new window.Swiper("#testimonial-swiper", {
+                slidesPerView: 1,
+                cardsEffect: { rotate: false, perSlideOffset: 10, slideShadows: false },
+                loop: true,
+                speed: 1500,
+                autoplay: { delay: 5000 },
+                spaceBetween: 20,
+                navigation: { prevEl: ".testimonial-swiper-button-prev", nextEl: ".testimonial-swiper-button-next" },
             });
         }
     });
 
-    // Topbar scroll behavior
+    // Topbar scroll behavior (ported from example landing.js)
     const topbar = document.getElementById("landing-topbar");
     if (topbar) {
-        let last = window.scrollY;
-        const onScroll = () => {
-            const y = window.scrollY;
-            topbar.dataset.scrolling = y > last ? "down" : "up";
-            topbar.dataset.atTop = y <= 4 ? "true" : "false";
-            last = y;
+        let scrollPosition = 0;
+        let prevScrollPosition = 0;
+
+        const onChangeScroll = () => {
+            topbar.setAttribute("data-at-top", scrollPosition < 30 ? "true" : "false");
+            if (scrollPosition < 500) {
+                topbar.removeAttribute("data-scrolling");
+            } else if (scrollPosition - prevScrollPosition > 0) {
+                topbar.setAttribute("data-scrolling", "down");
+            } else if (scrollPosition - prevScrollPosition < 0) {
+                topbar.setAttribute("data-scrolling", "up");
+            }
         };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
+
+        const handleScroll = () => {
+            setTimeout(() => {
+                prevScrollPosition = scrollPosition;
+                scrollPosition = window.scrollY;
+                onChangeScroll();
+            }, 200);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
     }
 });
 </script>
