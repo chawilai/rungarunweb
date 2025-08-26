@@ -188,22 +188,19 @@ function isActive(href) {
                   </div>
                 </div>
 
-              <!-- Agentic Hub (separate under Overview) -->
               <div class="group collapse">
-                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/agentic-storage')" />
+                <input aria-label="Sidemenu item trigger" type="checkbox" class="peer" name="sidebar-menu-parent-item" :checked="isActive('/apps-genai-home') || isActive('/apps-genai-content') || isActive('/apps-genai-image') || isActive('/apps-genai-library')" />
                 <div class="collapse-title px-2.5 py-1.5">
-                  <span class="iconify lucide--bot-message-square size-4"></span>
-                  <span class="grow">Agentic Hub</span>
+                  <span class="iconify lucide--sparkles size-4"></span>
+                  <span class="grow">Gen AI</span>
                   <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
                 </div>
                 <div class="collapse-content ms-6.5 !p-0">
                   <div class="mt-0.5 space-y-0.5">
-                    <Link class="menu-item" href="/agentic-storage" :class="{ active: isActive('/agentic-storage') }">
-                      <span class="grow">Storage</span>
-                      <div class="ms-auto inline-flex gap-2">
-                        <div class="border-primary/20 bg-primary/10 text-primary rounded-box border px-1.5 text-[12px]">New</div>
-                      </div>
-                    </Link>
+                    <Link class="menu-item" href="/apps-genai-home" :class="{ active: isActive('/apps-genai-home') }"><span class="grow">Home</span></Link>
+                    <Link class="menu-item" href="/apps-genai-content" :class="{ active: isActive('/apps-genai-content') }"><span class="grow">Content</span></Link>
+                    <Link class="menu-item" href="/apps-genai-image" :class="{ active: isActive('/apps-genai-image') }"><span class="grow">Image</span></Link>
+                    <Link class="menu-item" href="/apps-genai-library" :class="{ active: isActive('/apps-genai-library') }"><span class="grow">Library</span></Link>
                   </div>
                 </div>
               </div>
