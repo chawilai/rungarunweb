@@ -1,3 +1,4 @@
+@import '../../nexus-html@3.0.0/html/assets/app.css';
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -5,6 +6,4 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-
 /* Include Nexus compiled CSS for visual parity */
-@import '../../nexus-html@3.0.0/html/assets/app.css';
