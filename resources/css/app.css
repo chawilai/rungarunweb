@@ -1,5 +1,17 @@
+/* @import url('datatables.net-bs5'); */
+@import url('datatables.net-dt');
+@import url('datatables.net-autofill-dt');
+@import url('datatables.net-buttons-dt');
+@import url('datatables.net-colreorder-dt');
+@import url('datatables.net-columncontrol-dt');
+@import url('datatables.net-fixedcolumns-dt');
+@import url('datatables.net-searchpanes-dt');
+@import url('datatables.net-select-dt');
+
 @import '../../nexus-html@3.0.0/html/assets/app.css';
 @import 'tailwindcss';
+
+
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

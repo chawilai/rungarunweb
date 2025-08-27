@@ -1,6 +1,49 @@
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
+
+// Theme helpers (module scope so template can call them)
+
+const html = document.documentElement;
+const configKey = "__NEXUS_CONFIG_v3.0__";
+const defaultConfig = {
+  theme: "system",
+  direction: "ltr",
+  fontFamily: "dm-sans",
+  sidebarTheme: "light",
+  fullscreen: false,
+  language: "en",
+};
+const cfg = ref({ ...defaultConfig });
+
+function setThemeLanding(theme) {
+  if (!html) return;
+  html.setAttribute('data-theme', theme);
+  try {
+    const cache = localStorage.getItem(configKey);
+    cfg.value = cache ? JSON.parse(cache) : {};
+    cfg.value.theme = theme;
+    localStorage.setItem(configKey, JSON.stringify(cfg.value));
+  } catch (_) {}
+}
+function toggleThemeLanding() {
+    console.log(cfg.value)
+  if (!html) return;
+  const current = html.getAttribute('data-theme') || 'light';
+  setThemeLanding(current === 'dark' ? 'light' : 'dark');
+}
+function applyThemeFromConfigLanding() {
+  try {
+    const cache = localStorage.getItem(configKey);
+    cfg.value = cache ? JSON.parse(cache) : {};
+    let theme = cfg.value.theme || 'system';
+    if (theme === 'system') {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      theme = prefersDark ? 'dark' : 'light';
+    }
+    if (html) html.setAttribute('data-theme', theme);
+  } catch (_) {}
+}
 
 onMounted(() => {
     // Load Swiper for hero carousel
@@ -21,6 +64,10 @@ onMounted(() => {
         l.href = href;
         document.head.appendChild(l);
     }
+
+
+    // Apply theme from config on mount
+    applyThemeFromConfigLanding();
 
     ensureCss("https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css");
     ensureScript(
@@ -141,11 +188,13 @@ onMounted(() => {
                         <img
                             alt="logo-light"
                             class="h-5 dark:hidden"
+                            :class="{ 'hidden': cfg.theme === 'dark' }"
                             src="/nexus/images/logo/logo-light.png"
                         />
                         <img
                             alt="logo-dark"
                             class="hidden h-5 dark:block"
+                            :class="{ 'inline': cfg.theme === 'dark' }"
                             src="/nexus/images/logo/logo-dark.png"
                         />
                     </Link>
@@ -160,11 +209,7 @@ onMounted(() => {
                     <button
                         aria-label="Toggle Theme"
                         class="btn btn-square btn-ghost btn-sm border-transparent"
-                        @click="
-                            document.documentElement.toggleAttribute(
-                                'data-theme',
-                            )
-                        "
+                        @click="toggleThemeLanding()"
                     >
                         <span class="iconify lucide--sun absolute size-4.5" />
                     </button>
@@ -275,11 +320,13 @@ onMounted(() => {
                                                 <img
                                                     src="/nexus/images/landing/dashboard-ecommerce-light.jpg"
                                                     class="h-full w-full rounded-lg dark:hidden"
+                                                    :class="{ 'hidden': cfg.theme === 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <img
                                                     src="/nexus/images/landing/dashboard-ecommerce-dark.jpg"
-                                                    class="hidden h-full w-full rounded-lg dark:block"
+                                                    class="h-full w-full rounded-lg dark:block"
+                                                    :class="{ 'hidden': cfg.theme !== 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <div
@@ -303,11 +350,13 @@ onMounted(() => {
                                                 <img
                                                     src="/nexus/images/landing/dashboard-gen-ai-light.jpg"
                                                     class="h-full w-full rounded-lg dark:hidden"
+                                                    :class="{ 'hidden': cfg.theme === 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <img
                                                     src="/nexus/images/landing/dashboard-gen-ai-dark.jpg"
-                                                    class="hidden h-full w-full rounded-lg dark:block"
+                                                    class="h-full w-full rounded-lg dark:block"
+                                                    :class="{ 'hidden': cfg.theme !== 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <div
@@ -331,11 +380,13 @@ onMounted(() => {
                                                 <img
                                                     src="/nexus/images/landing/dashboard-crm-light.jpg"
                                                     class="h-full w-full rounded-lg dark:hidden"
+                                                    :class="{ 'hidden': cfg.theme === 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <img
                                                     src="/nexus/images/landing/dashboard-crm-dark.jpg"
-                                                    class="hidden h-full w-full rounded-lg dark:block"
+                                                    class="h-full w-full rounded-lg dark:block"
+                                                    :class="{ 'hidden': cfg.theme !== 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <div
@@ -360,11 +411,13 @@ onMounted(() => {
                                                 <img
                                                     src="/nexus/images/landing/components-home-light.jpg"
                                                     class="h-full w-full rounded-lg dark:hidden"
+                                                    :class="{ 'hidden': cfg.theme === 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <img
                                                     src="/nexus/images/landing/components-home-dark.jpg"
-                                                    class="hidden h-full w-full rounded-lg dark:block"
+                                                    class="h-full w-full rounded-lg dark:block"
+                                                    :class="{ 'hidden': cfg.theme !== 'dark' }"
                                                     alt="hero-landing"
                                                 />
                                                 <div
@@ -386,14 +439,14 @@ onMounted(() => {
                             class="absolute z-1 flex justify-between max-md:start-1/2 max-md:-bottom-12 max-md:-translate-x-1/2 max-md:gap-3 md:-inset-x-24 md:top-1/2 md:-translate-y-1/2"
                         >
                             <button
-                                class="hero-swiper-button-prev border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-xs transition-all hover:shadow-md max-md:shadow md:size-10 dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
+                                class="hero-swiper-button-prev light:border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full light:bg-white shadow-xs transition-all light:hover:shadow-md max-md:shadow md:size-10 dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
                             >
                                 <span
                                     class="iconify lucide--chevron-left size-5"
                                 ></span>
                             </button>
                             <button
-                                class="hero-swiper-button-next border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-xs transition-all hover:shadow-md max-md:shadow md:size-10 dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
+                                class="hero-swiper-button-next light:border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full light:bg-white shadow-xs transition-all light:hover:shadow-md max-md:shadow md:size-10 dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
                             >
                                 <span
                                     class="iconify lucide--chevron-right size-5"
@@ -1823,18 +1876,20 @@ onMounted(() => {
             >
                 <div class="grid grid-cols-2 gap-6 md:grid-cols-5">
                     <div class="col-span-2">
-                        <a href="./dashboards-ecommerce.html">
+                        <Link href="/dashboards-ecommerce">
                             <img
-                                alt="logo-dark"
-                                class="hidden h-5 dark:block"
-                                src="/nexus/images/logo/logo-dark.png"
+                            alt="logo-dark"
+                            class="hidden h-5 dark:inline"
+                            :class="{ 'inline': cfg.theme === 'dark' }"
+                            src="/nexus/images/logo/logo-dark.png"
                             />
                             <img
-                                alt="logo-light"
-                                class="block h-5 dark:hidden"
-                                src="/nexus/images/logo/logo-light.png"
+                            alt="logo-light"
+                            class="h-5 dark:hidden"
+                            :class="{ 'hidden': cfg.theme === 'dark' }"
+                            src="/nexus/images/logo/logo-light.png"
                             />
-                        </a>
+                        </Link>
 
                         <p class="text-base-content/80 mt-3 max-sm:text-sm">
                             Launch powerful modern dashboards with customizable

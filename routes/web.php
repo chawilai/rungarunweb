@@ -54,6 +54,7 @@ Route::get('/landing', fn() => Inertia::render('Nexus/Landing'))->name('nexus.la
 
 Route::get('/pages-get-help', fn() => Inertia::render('Nexus/Pages/GetHelp'))->name('nexus.pages.gethelp');
 
+Route::get('/datatables', fn() => Inertia::render('Datatables'))->name('datatables');
 
 
 Route::middleware('auth')->group(function () {
